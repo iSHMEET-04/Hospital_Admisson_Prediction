@@ -1,88 +1,116 @@
-# Hospital Admissions Prediction Model
+# Hospital Admissions Prediction Using Random Forest
 
-This project aims to predict the total number of hospital admissions using a neural network model. The dataset is preprocessed, and a deep learning model is trained to make predictions. The project is implemented in Python using TensorFlow/Keras, Pandas, and Scikit-learn.
+This project predicts the number of hospital admissions based on features such as arrival month, age, and gender. It uses a **Random Forest Regressor** model to make predictions. The data is preprocessed by encoding categorical variables (month and gender) and scaling numerical features (age). The model is evaluated using Mean Squared Error (MSE).
+
+---
 
 ## Table of Contents
 - [Project Overview](#project-overview)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Dataset](#dataset)
-- [Model Architecture](#model-architecture)
+- [Preprocessing](#preprocessing)
+- [Model Training](#model-training)
 - [Results](#results)
+- [Prediction Example](#prediction-example)
 - [License](#license)
 
+---
+
 ## Project Overview
-The goal of this project is to predict the total number of hospital admissions (`total_admissions`) based on various features in the dataset. The dataset is preprocessed by handling missing values, dropping unnecessary columns, and normalizing the data. A neural network model is then trained to predict the target variable.
+The goal of this project is to predict the number of hospital admissions based on the following features:
+- **Arrival Month**: The month of admission (e.g., January, February).
+- **Age**: The age of the patient.
+- **Gender**: The gender of the patient.
+
+The project uses a **Random Forest Regressor** to model the relationship between these features and the number of admissions. The data is preprocessed using **One-Hot Encoding** for categorical variables and **Standard Scaling** for numerical features.
+
+---
 
 ## Installation
 To run this project, you need to have Python installed along with the following libraries:
-- TensorFlow/Keras
-- Pandas
-- NumPy
-- Scikit-learn
-- Matplotlib
+- `pandas`
+- `numpy`
+- `scikit-learn`
+- `matplotlib` (optional, for visualization)
 
 You can install the required libraries using the following command:
 
 ```bash
-pip install tensorflow pandas numpy scikit-learn matplotlib
+pip install pandas numpy scikit-learn matplotlib
 Usage
-Mount Google Drive: The dataset is loaded from Google Drive. Ensure that the file filtered_data.csv is available in your Google Drive.
+Load the Dataset: Ensure the dataset is loaded into a Pandas DataFrame (df).
 
 Preprocessing:
 
-Drop unnecessary columns (total_admissions, Unnamed: 0).
+Group admissions by month and calculate the total admissions per month.
 
-Handle missing values by filling them with the median.
+Encode categorical variables (arrivalmonth and gender) using One-Hot Encoding.
 
-Convert all features to numeric values.
+Scale the age feature using Standard Scaling.
 
 Model Training:
 
 Split the data into training and testing sets.
 
-Define a neural network model with three hidden layers.
-
-Compile the model using the Adam optimizer and mean squared error loss.
-
-Train the model with early stopping to prevent overfitting.
+Train a Random Forest Regressor model.
 
 Evaluation:
 
-Evaluate the model on the test set.
+Evaluate the model using Mean Squared Error (MSE).
 
-Plot the training and validation loss.
+Prediction:
 
-Visualize the predicted vs actual admissions.
-
-Results:
-
-Print the test loss and mean squared error (MSE).
-
-Display a scatter plot of predicted vs actual admissions.
+Predict admissions for a specific month, age, and gender.
 
 Dataset
-The dataset used in this project is stored in a CSV file named filtered_data.csv. It contains various features related to hospital admissions, with total_admissions as the target variable.
+The dataset should contain the following columns:
 
-Model Architecture
-The neural network model consists of the following layers:
+arrivalmonth: The month of admission (e.g., "January", "February").
 
-Input layer with 128 neurons and ReLU activation.
+age: The age of the patient.
 
-Hidden layer with 64 neurons and ReLU activation.
+gender: The gender of the patient (e.g., "Male", "Female").
 
-Hidden layer with 32 neurons and ReLU activation.
+admissions: The number of admissions (used for grouping and summing).
 
-Output layer with 1 neuron and linear activation.
+Preprocessing
+Group Admissions by Month:
 
-The model is compiled using the Adam optimizer with a learning rate of 0.001 and mean squared error as the loss function.
+The dataset is grouped by arrivalmonth, and the total admissions per month are calculated.
 
+Encode Categorical Variables:
+
+arrivalmonth and gender are encoded using One-Hot Encoding.
+
+Scale Numerical Features:
+
+The age feature is scaled using StandardScaler.
+
+Model Training
+A Random Forest Regressor is used to train the model. The model is trained on 80% of the data, and the remaining 20% is used for testing.
+
+python
+Copy
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
 Results
-Test Loss: The final test loss after training the model.
+The model is evaluated using Mean Squared Error (MSE):
 
-Mean Squared Error (MSE): The MSE between the predicted and actual admissions.
+python
+Copy
+mse = mean_squared_error(y_test, y_pred)
+print("Mean Squared Error (MSE):", mse)
+Prediction Example
+You can predict the number of admissions for a specific month, age, and gender. For example:
 
-Visualization: A scatter plot comparing the predicted vs actual admissions.
+python
+Copy
+specific_month = 'January'
+specific_age = 28
+specific_gender = 'Male'
 
+predicted_admissions = model.predict(input_features)
+print(f'Predicted number of admissions for {specific_month}, Age: {specific_age}, Gender: {specific_gender}: {predicted_admissions[0]}')
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
